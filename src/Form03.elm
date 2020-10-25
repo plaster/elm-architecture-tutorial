@@ -2,7 +2,7 @@ module Form03 exposing (main)
 
 import Browser
 -- import Html exposing (..)
-import Html exposing (Html, div, input, text)
+import Html exposing (Html, ul, li, div, input, text)
 -- import Html.Attributes exposing (..)
 import Html.Attributes exposing (type_, placeholder, value, style)
 import Html.Events exposing (onInput)
@@ -68,7 +68,7 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-  div []
+  ul []
     [ viewInput "text" "Name" model.name Name
     , viewInput "age" "Age" model.age Age
     , viewInput "password" "Password" model.password Password
@@ -79,36 +79,38 @@ view model =
 
 viewInput : String -> String -> String -> (String -> msg) -> Html msg
 viewInput t p v toMsg =
-  input [ type_ t, placeholder p, value v, onInput toMsg ] []
+  li []
+    [ input [ type_ t, placeholder p, value v, onInput toMsg ] []
+    ]
 
 
 viewValidation : Model -> Html msg
 viewValidation model =
   if model.name == "" then
-    div [ style "color" "red" ] [ text "Name empty!" ]
+    li [ style "color" "red" ] [ text "Name empty!" ]
   else
   if model.age == "" then
-    div [ style "color" "red" ] [ text "Age empty!" ]
+    li [ style "color" "red" ] [ text "Age empty!" ]
   else
   if String.toInt(model.age) == Nothing then
-    div [ style "color" "red" ] [ text "Age malformed!" ]
+    li [ style "color" "red" ] [ text "Age malformed!" ]
   else
   if model.password == "" then
-    div [ style "color" "red" ] [ text "Password empty!" ]
+    li [ style "color" "red" ] [ text "Password empty!" ]
   else
   if model.password /= model.passwordAgain then
-    div [ style "color" "red" ] [ text "Passwords do not match!" ]
+    li [ style "color" "red" ] [ text "Passwords do not match!" ]
   else
   if length model.password < 8 then
-    div [ style "color" "#880" ] [ text "Password too short." ]
+    li [ style "color" "#880" ] [ text "Password too short." ]
   else
   if not (String.any isUpper model.password) then
-    div [ style "color" "#880" ] [ text "Password missing upper-case chars." ]
+    li [ style "color" "#880" ] [ text "Password missing upper-case chars." ]
   else
   if not (String.any isLower model.password) then
-    div [ style "color" "#880" ] [ text "Password missing lower-case chars." ]
+    li [ style "color" "#880" ] [ text "Password missing lower-case chars." ]
   else
   if not (String.any isDigit model.password) then
-    div [ style "color" "#880" ] [ text "Password missing digit chars." ]
+    li [ style "color" "#880" ] [ text "Password missing digit chars." ]
   else
-    div [ style "color" "green" ] [ text "OK" ]
+    li [ style "color" "green" ] [ text "OK" ]
