@@ -2,10 +2,10 @@ module Form03 exposing (main)
 
 import Browser
 -- import Html exposing (..)
-import Html exposing (Html, ul, li, div, input, text)
+import Html exposing (Html, ul, li, div, form, input, text)
 -- import Html.Attributes exposing (..)
 import Html.Attributes exposing (type_, placeholder, value, style)
-import Html.Events exposing (onInput)
+import Html.Events exposing (onInput, onSubmit)
 import String exposing (length)
 import Char exposing (isUpper, isLower, isDigit)
 import List exposing (map)
@@ -30,12 +30,12 @@ type alias Model =
   , lastModel : LastModel
   }
 
-type LastModel = LastModel (Maybe Model)
+type LastModel = LastModel Model | EmptyModel
 
 
 init : Model
 init =
-  Model "" "" "" "" (LastModel Nothing)
+  Model "" "" "" "" EmptyModel
 
 
 
@@ -66,7 +66,7 @@ update msg model =
       { model | passwordAgain = password }
 
     Submit lastModel ->
-      { model | lastModel = LastModel (Just lastModel) }
+      { model | lastModel = LastModel lastModel }
 
 
 
@@ -75,15 +75,20 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
+  form [ onSubmit (Submit model) ]
+  [
   ul []
     (
     [ viewInput "text" "Name" model.name Name
     , viewInput "age" "Age" model.age Age
     , viewInput "password" "Password" model.password Password
     , viewInput "password" "Re-enter Password" model.passwordAgain PasswordAgain
+    , li [] [input [ type_ "submit"] []]
     ] ++
-    viewValidation model
-    )
+    case model.lastModel of
+      EmptyModel -> []
+      LastModel lastModel -> viewValidation lastModel
+    )]
 
 
 viewInput : String -> String -> String -> (String -> msg) -> Html msg
