@@ -1,6 +1,8 @@
 import Browser
-import Html exposing (..)
-import Html.Attributes exposing (..)
+-- import Html exposing (..)
+import Html exposing (Html, div, input, text)
+-- import Html.Attributes exposing (..)
+import Html.Attributes exposing (type_, placeholder, value, style)
 import Html.Events exposing (onInput)
 
 
