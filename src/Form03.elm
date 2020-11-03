@@ -78,7 +78,7 @@ view model =
   form [ onSubmit (Submit model) ]
   [
   ul []
-    (
+    <|
     [ viewInput "text" "Name" model.name Name
     , viewInput "age" "Age" model.age Age
     , viewInput "password" "Password" model.password Password
@@ -88,7 +88,7 @@ view model =
     case model.lastModel of
       EmptyModel -> []
       LastModel lastModel -> viewValidation lastModel
-    )]
+    ]
 
 
 viewInput : String -> String -> String -> (String -> msg) -> Html msg
@@ -122,13 +122,13 @@ validationW model =
   ++ (if length model.password < 8
   then [ "Password too short." ]
   else [])
-  ++ (if not (String.any isUpper model.password)
+  ++ (if not <| String.any isUpper model.password
   then [ "Password missing upper-case chars." ]
   else [])
-  ++ (if not (String.any isLower model.password)
+  ++ (if not <| String.any isLower model.password
   then [ "Password missing lower-case chars." ]
   else [])
-  ++ (if not (String.any isDigit model.password)
+  ++ (if not <| String.any isDigit model.password
   then [ "Password missing digit chars." ]
   else [])
 
